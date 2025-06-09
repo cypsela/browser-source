@@ -1,8 +1,15 @@
 {
   "name": "@cypsela/fs-entry-source",
   "version": "0.0.0",
-  "description": "",
+  "description": "W3C's FileSystemEntry as a source for @helia/unixfs",
   "type": "module",
+  "repository": {
+    "url": "https://github.com/cypsela/fs-entry-source",
+    "type": "github"
+  },
+  "bugs": {
+    "url": "https://github.com/cypsela/issues"
+  },
   "exports": {
     ".": {
       "types": "./dist/src/index.d.ts",
