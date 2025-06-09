@@ -1,0 +1,49 @@
+{
+  "name": "@cypsela/fs-entry-source",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "files": [
+    "./dist/src"
+  ],
+  "keywords": ["ipfs", "unixfs", "browser", "FileSystemEntry"],
+  "author": "tabcat",
+  "license": "MIT",
+  "scripts": {
+    "lint": "prettier src test --check",
+    "format": "prettier src test --write",
+    "build": "tsc",
+    "test": "vitest --config vitest.config.ts --run",
+    "test:watch": "vitest --config vitest.config.ts",
+    "api-docs": "typedoc src",
+    "ci": "pnpm build && pnpm lint && pnpm test"
+  },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-organize-imports"
+    ]
+  },
+  "lint-staged": {
+    "*.ts": "prettier --ignore-unknown --write"
+  },
+  "dependencies": {
+    "blob-to-it": "^2.0.10",
+    "ipfs-unixfs": "^11.2.1",
+    "ipfs-unixfs-importer": "^15.3.2"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
+    "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "typedoc": "^0.28.5",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.2"
+  }
+}
