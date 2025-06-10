@@ -31,7 +31,7 @@
   "author": "tabcat",
   "license": "MIT",
   "scripts": {
-    "prepublishOnly": "pnpm build",
+    "prepublishOnly": "pnpm install && pnpm build",
     "lint": "prettier src test --check",
     "format": "prettier src test --write",
     "build": "tsc",
