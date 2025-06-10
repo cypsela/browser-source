@@ -3,17 +3,19 @@ import type { Mtime } from "ipfs-unixfs";
 export type BrowserFsEntry = FileSystemEntry;
 export type BrowserFsHandle = FileSystemHandle;
 
-export type BrowserFsItem = BrowserFsEntry | BrowserFsHandle
+export type BrowserFsItem = BrowserFsEntry | BrowserFsHandle;
 
-export type BrowserFsDir<T extends BrowserFsItem> =
-  T extends BrowserFsEntry ? FileSystemDirectoryEntry :
-  T extends BrowserFsHandle ? FileSystemDirectoryHandle :
-  never;
+export type BrowserFsDir<T extends BrowserFsItem> = T extends BrowserFsEntry
+  ? FileSystemDirectoryEntry
+  : T extends BrowserFsHandle
+    ? FileSystemDirectoryHandle
+    : never;
 
-export type BrowserFsFile<T extends BrowserFsItem> =
-  T extends FileSystemEntry ? FileSystemFileEntry :
-  T extends FileSystemHandle ? FileSystemFileHandle :
-  never;
+export type BrowserFsFile<T extends BrowserFsItem> = T extends FileSystemEntry
+  ? FileSystemFileEntry
+  : T extends FileSystemHandle
+    ? FileSystemFileHandle
+    : never;
 
 export interface GetEntries<T extends BrowserFsItem> {
   (dir: BrowserFsDir<T>): AsyncGenerator<T>;
@@ -24,7 +26,7 @@ export interface GetFile<T extends BrowserFsItem> {
 }
 
 export interface GetKind<T extends BrowserFsItem> {
-  (item: T): FileSystemHandleKind
+  (item: T): FileSystemHandleKind;
 }
 
 export interface BrowserFsItemSourceResult {
@@ -71,14 +73,20 @@ export interface BrowserFsItemSource<T extends BrowserFsItem> {
     source: T,
     getEntries: GetEntries<T>,
     getFile: GetFile<T>,
-    options: BrowserFsItemSourceOptions
+    options: BrowserFsItemSourceOptions,
   ): AsyncGenerator<BrowserFsItemSourceResult>;
 }
 
 export interface FileSystemEntrySource {
-  (source: FileSystemEntry, options: BrowserFsItemSourceOptions): AsyncGenerator<BrowserFsItemSourceResult>
+  (
+    source: FileSystemEntry,
+    options: BrowserFsItemSourceOptions,
+  ): AsyncGenerator<BrowserFsItemSourceResult>;
 }
 
 export interface FileSystemHandleSource {
-  (source: FileSystemHandle, options: BrowserFsItemSourceOptions): AsyncGenerator<BrowserFsItemSourceResult>
+  (
+    source: FileSystemHandle,
+    options: BrowserFsItemSourceOptions,
+  ): AsyncGenerator<BrowserFsItemSourceResult>;
 }
