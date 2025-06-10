@@ -1,7 +1,7 @@
 {
-  "name": "@cypsela/fs-entry-source",
+  "name": "@cypsela/browser-source",
   "version": "0.0.0",
-  "description": "W3C's FileSystemEntry as a source for @helia/unixfs",
+  "description": "W3C's FileSystemEntry and FileSystemHandle as a sources for @helia/unixfs",
   "type": "module",
   "repository": {
     "url": "https://github.com/cypsela/fs-entry-source",
@@ -19,7 +19,15 @@
   "files": [
     "./dist/src"
   ],
-  "keywords": ["ipfs", "unixfs", "browser", "FileSystemEntry"],
+  "keywords": [
+    "ipfs",
+    "unixfs",
+    "browser",
+    "webkit",
+    "opfs",
+    "FileSystemEntry",
+    "FileSystemHandle"
+  ],
   "author": "tabcat",
   "license": "MIT",
   "scripts": {
