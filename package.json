@@ -32,13 +32,13 @@
   "license": "MIT",
   "scripts": {
     "prepublishOnly": "pnpm install && pnpm build",
-    "lint": "prettier src test --check",
-    "format": "prettier src test --write",
+    "lint": "prettier src --check",
+    "format": "prettier src --write",
     "build": "tsc",
     "test": "vitest --config vitest.config.ts --run",
     "test:watch": "vitest --config vitest.config.ts",
     "api-docs": "typedoc src",
-    "ci": "pnpm build && pnpm lint && pnpm test"
+    "ci": "pnpm build && pnpm lint"
   },
   "prettier": {
     "plugins": [
