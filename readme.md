@@ -8,6 +8,8 @@
 
 ## Usage
 
+Api docs: [cypsela.github.io/browser-source](https://cypsela.github.io/browser-source)
+
 ### [FileSystemEntry](https://developer.mozilla.org/en-US/docs/Web/API/FileSystemEntry) Source
 
 ```ts
