@@ -1,6 +1,6 @@
 # browser-source
 
-> W3C's FileSystemEntry and FileSystemHandle as a sources for @helia/unixfs
+> W3C's FileSystemEntry and FileSystemHandle as a sources for [@helia/unixfs](https://github.com/ipfs/helia/tree/main/packages/unixfs)
 
 ## Install
 
