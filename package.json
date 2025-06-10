@@ -48,12 +48,11 @@
     "*.ts": "prettier --ignore-unknown --write"
   },
   "dependencies": {
-    "blob-to-it": "^2.0.10",
-    "ipfs-unixfs": "^11.2.1",
-    "ipfs-unixfs-importer": "^15.3.2"
+    "blob-to-it": "^2.0.10"
   },
   "devDependencies": {
     "husky": "^9.1.7",
+    "ipfs-unixfs": "^11.2.1",
     "lint-staged": "^16.1.0",
     "prettier": "^3.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",
