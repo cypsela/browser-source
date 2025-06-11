@@ -39,5 +39,3 @@ const options: BrowserFsItemSourceOptions = { ... }
 
 for await (const _ of fs.addAll(fsHandleSource(<FileSystemHandle>, options))) {}
 ```
-
-
