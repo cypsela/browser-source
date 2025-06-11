@@ -28,7 +28,7 @@ for await (const _ of fs.addAll(fsEntrySource(<FileSystemEntry>, options))) {}
 ### [FileSystemHandle](https://developer.mozilla.org/en-US/docs/Web/API/FileSystemHandle) Source
 
 ```ts
-import { fsHandleSource } from '@cypsela/browser-source'
+import { fsHandleSource, BrowserFsItemSourceOptions } from '@cypsela/browser-source'
 import { createHelia } from 'helia'
 import { unixfs } from '@helia/unixfs'
 
