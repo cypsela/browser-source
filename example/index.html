@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Drop Zones</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .drop-zone {
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+        padding: 40px;
+        text-align: center;
+        margin: 20px;
+        transition: background 0.3s;
+      }
+
+      .drop-zone.hover {
+        background: #eef;
+      }
+
+      #log {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        border-top: 1px solid #ccc;
+        font-family: monospace;
+        padding: 10px;
+        background: #f8f8f8;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="entry-zone" class="drop-zone">
+      Drop files or folders (FileSystemEntry API)
+    </div>
+    <div id="handle-zone" class="drop-zone">
+      Drop files or folders (FileSystemHandle API)
+    </div>
+    <div id="log"></div>
+    <script type="module" src="bundle.js"></script>
+  </body>
+</html>

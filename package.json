@@ -35,6 +35,7 @@
     "lint": "prettier src --check",
     "format": "prettier src --write",
     "build": "tsc",
+    "build:example": "esbuild example/index.ts --bundle --format=esm --outfile=example/bundle.js",
     "test": "vitest --config vitest.config.ts --run",
     "test:watch": "vitest --config vitest.config.ts",
     "api-docs": "typedoc src",
@@ -52,6 +53,9 @@
     "blob-to-it": "^2.0.10"
   },
   "devDependencies": {
+    "@helia/unixfs": "^5.0.3",
+    "esbuild": "^0.25.5",
+    "helia": "^5.4.2",
     "husky": "^9.1.7",
     "ipfs-unixfs": "^11.2.1",
     "lint-staged": "^16.1.0",
