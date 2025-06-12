@@ -15,6 +15,9 @@ declare global {
   }
 }
 
+const helia = await createHelia();
+const fs = unixfs(helia);
+
 const setSupported = <T extends FileSystemEntry | FileSystemHandle>(
   element: HTMLElement,
   sourceFn: (
@@ -59,8 +62,8 @@ const setSupported = <T extends FileSystemEntry | FileSystemHandle>(
         const message = {
           cid: f.cid.toString(),
           path: f.path,
-          size: Number(f.size)
-        }
+          size: Number(f.size),
+        };
         log(prefix + JSON.stringify(message));
       }
     }
@@ -100,6 +103,3 @@ function log(msg: string) {
   logDiv.appendChild(el);
   logDiv.scrollTop = logDiv.scrollHeight;
 }
-
-const helia = await createHelia({ libp2p: undefined });
-const fs = unixfs(helia);
