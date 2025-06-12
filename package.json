@@ -1,6 +1,6 @@
 {
   "name": "@cypsela/browser-source",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "W3C's FileSystemEntry and FileSystemHandle as a sources for @helia/unixfs",
   "type": "module",
   "repository": {
