@@ -6,6 +6,12 @@
 
 `npm i @cypsela/browser-source`
 
+## Example
+
+live: https://browser-source.cypsela.eth.limo
+
+source: [./example](./example)
+
 ## Usage
 
 Api docs: [cypsela.github.io/browser-source](https://cypsela.github.io/browser-source)
