@@ -15,6 +15,11 @@
         flex-direction: column;
       }
 
+      #warning {
+        text-align: center;
+        text-decoration: underline;
+      }
+
       .drop-zone {
         border: 2px dashed #ccc;
         border-radius: 10px;
@@ -40,6 +45,7 @@
     </style>
   </head>
   <body>
+    <div id="warning">You are about to host files on the public IPFS network!</div>
     <div id="entry-zone" class="drop-zone">
       Drop files or folders (FileSystemEntry API)
     </div>
