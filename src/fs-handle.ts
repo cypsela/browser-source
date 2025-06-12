@@ -24,7 +24,7 @@ export function getHandleKind(handle: FileSystemHandle): FileSystemHandleKind {
 
 export function fsHandleSource(
   handle: FileSystemHandle,
-  options: BrowserFsItemSourceOptions,
+  options?: BrowserFsItemSourceOptions,
 ): AsyncGenerator<BrowserFsItemSourceResult> {
   return browserFsItemSource(
     handle,

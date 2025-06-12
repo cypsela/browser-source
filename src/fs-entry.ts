@@ -35,7 +35,7 @@ export function getFsEntryKind(entry: FileSystemEntry): FileSystemHandleKind {
 
 export function fsEntrySource(
   entry: FileSystemEntry,
-  options: BrowserFsItemSourceOptions,
+  options?: BrowserFsItemSourceOptions,
 ): AsyncGenerator<BrowserFsItemSourceResult> {
   return browserFsItemSource(
     entry,

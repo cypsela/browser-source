@@ -73,20 +73,20 @@ export interface BrowserFsItemSource<T extends BrowserFsItem> {
     source: T,
     getEntries: GetEntries<T>,
     getFile: GetFile<T>,
-    options: BrowserFsItemSourceOptions,
+    options?: BrowserFsItemSourceOptions,
   ): AsyncGenerator<BrowserFsItemSourceResult>;
 }
 
 export interface FileSystemEntrySource {
   (
     source: FileSystemEntry,
-    options: BrowserFsItemSourceOptions,
+    options?: BrowserFsItemSourceOptions,
   ): AsyncGenerator<BrowserFsItemSourceResult>;
 }
 
 export interface FileSystemHandleSource {
   (
     source: FileSystemHandle,
-    options: BrowserFsItemSourceOptions,
+    options?: BrowserFsItemSourceOptions,
   ): AsyncGenerator<BrowserFsItemSourceResult>;
 }
