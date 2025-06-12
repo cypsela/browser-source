@@ -26,7 +26,9 @@ export async function* getDirEntryEntries(
 export async function getFileEntryFile(
   fileEntry: FileSystemFileEntry,
 ): Promise<File> {
-  return new Promise<File>((resolve, reject) => fileEntry.file(resolve, reject));
+  return new Promise<File>((resolve, reject) =>
+    fileEntry.file(resolve, reject),
+  );
 }
 
 export function getFsEntryKind(entry: FileSystemEntry): FileSystemHandleKind {
