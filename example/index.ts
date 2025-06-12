@@ -1,8 +1,8 @@
 import { unixfs } from "@helia/unixfs";
 import { createHelia } from "helia";
 import {
-  BrowserFsItemSourceOptions,
-  BrowserFsItemSourceResult,
+  type BrowserFsItemSourceOptions,
+  type BrowserFsItemSourceResult,
   fsEntrySource,
   fsHandleSource,
 } from "../src/index.js";
@@ -13,10 +13,21 @@ declare global {
     // not supported in brave, works in chrome
     getAsFileSystemHandle?: () => Promise<FileSystemHandle | null>;
   }
+  interface Window {
+    helia: any;
+    fs: any;
+    fsEntrySource: any;
+    fsHandleSource: any;
+  }
 }
 
 const helia = await createHelia();
 const fs = unixfs(helia);
+
+window.helia = helia;
+window.fs = helia;
+window.fsEntrySource = fsEntrySource;
+window.fsHandleSource = fsHandleSource;
 
 const setSupported = <T extends FileSystemEntry | FileSystemHandle>(
   element: HTMLElement,
