@@ -1,6 +1,6 @@
 {
   "name": "@cypsela/browser-source",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "WICG’s FileSystemEntry and FileSystemHandle as a sources for @helia/unixfs",
   "type": "module",
   "repository": {
