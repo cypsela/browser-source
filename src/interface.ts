@@ -1,4 +1,5 @@
 import type { Mtime } from "ipfs-unixfs";
+import type { DirectoryCandidate, FileCandidate } from "ipfs-unixfs-importer";
 
 export type BrowserFsEntry = FileSystemEntry;
 export type BrowserFsHandle = FileSystemHandle;
@@ -29,12 +30,7 @@ export interface GetKind<T extends BrowserFsItem> {
   (item: T): FileSystemHandleKind;
 }
 
-export interface BrowserFsItemSourceResult {
-  path: string;
-  content: AsyncIterable<Uint8Array> | undefined;
-  mtime: Mtime | undefined;
-  mode: number | undefined;
-}
+export type BrowserFsItemSourceResult = FileCandidate | DirectoryCandidate;
 
 export interface BrowserFsItemSourceOptions {
   /**
