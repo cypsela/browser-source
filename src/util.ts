@@ -49,7 +49,7 @@ export async function* browserFsItemSource<T extends BrowserFsItem>(
   const path = (options.prefix ?? "") + item.name;
 
   if (isDirectory(item, getKind)) {
-    if (!options.onlyFiles) {
+    if (options.onlyFiles === true) {
       yield {
         path,
         content: undefined,

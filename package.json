@@ -58,6 +58,7 @@
     "helia": "^5.4.2",
     "husky": "^9.1.7",
     "ipfs-unixfs": "^11.2.1",
+    "ipfs-unixfs-importer": "^16.0.1",
     "lint-staged": "^16.1.0",
     "prettier": "^3.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",
