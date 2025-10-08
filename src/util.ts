@@ -12,7 +12,7 @@ import type {
 } from "./interface.js";
 
 // https://github.com/ipfs/helia/blob/28a7091260fda1f711b93318084a65ff3d2f3f8a/packages/unixfs/src/utils/to-mtime.ts#L47-L52
-function msToMtime(ms: number): Mtime {
+export function msToMtime(ms: number): Mtime {
   const secs = Math.floor(ms / 1000);
 
   return {
