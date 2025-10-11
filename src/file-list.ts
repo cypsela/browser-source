@@ -1,7 +1,6 @@
-import blobToIt from "blob-to-it";
 import { FileCandidate } from "ipfs-unixfs-importer";
 import { BrowserFsItemSourceOptions } from "./interface.js";
-import { msToMtime } from "./util.js";
+import { createIterableFile, msToMtime } from "./util.js";
 
 export function* fileListSource(
   list: FileList,
@@ -11,7 +10,7 @@ export function* fileListSource(
   // could sort by webkitRelativePath before yielding
   for (const file of list) {
     yield {
-      content: blobToIt(file),
+      content: createIterableFile(file),
       path:
         file.webkitRelativePath !== "" ? file.webkitRelativePath : undefined,
       mtime: options?.mtime ?? msToMtime(file.lastModified),

@@ -9,7 +9,25 @@ import type {
   GetEntries,
   GetFile,
   GetKind,
+  IterableFile,
 } from "./interface.js";
+
+class DefaultIterableFile extends File implements IterableFile {
+  constructor(
+    blobParts: BlobPart[],
+    fileName: string,
+    options: FilePropertyBag,
+  ) {
+    super(blobParts, fileName, options);
+  }
+
+  [Symbol.asyncIterator](): AsyncIterator<Uint8Array> {
+    return blobToIt(this)[Symbol.asyncIterator]();
+  }
+}
+
+export const createIterableFile = (file: File): IterableFile =>
+  new DefaultIterableFile([file], file.name, { type: file.type });
 
 // https://github.com/ipfs/helia/blob/28a7091260fda1f711b93318084a65ff3d2f3f8a/packages/unixfs/src/utils/to-mtime.ts#L47-L52
 export function msToMtime(ms: number): Mtime {
@@ -70,7 +88,7 @@ export async function* browserFsItemSource<T extends BrowserFsItem>(
 
     yield {
       path,
-      content: blobToIt(file),
+      content: createIterableFile(file),
       mode: options.mode,
       mtime: options.preserveMtime
         ? msToMtime(file.lastModified)

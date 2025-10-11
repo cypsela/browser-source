@@ -7,4 +7,5 @@ export type {
   BrowserFsItemSourceResult,
   FileSystemEntrySource,
   FileSystemHandleSource,
+  IterableFile,
 } from "./interface.js";

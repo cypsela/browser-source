@@ -30,7 +30,11 @@ export interface GetKind<T extends BrowserFsItem> {
   (item: T): FileSystemHandleKind;
 }
 
-export type BrowserFsItemSourceResult = FileCandidate | DirectoryCandidate;
+export interface IterableFile extends File, AsyncIterable<Uint8Array> {}
+
+export type BrowserFsItemSourceResult =
+  | FileCandidate<IterableFile>
+  | DirectoryCandidate;
 
 export interface BrowserFsItemSourceOptions {
   /**
