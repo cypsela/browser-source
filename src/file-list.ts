@@ -1,11 +1,11 @@
 import { FileCandidate } from "ipfs-unixfs-importer";
-import { BrowserFsItemSourceOptions } from "./interface.js";
+import { BrowserFsItemSourceOptions, IterableFile } from "./interface.js";
 import { createIterableFile, msToMtime } from "./util.js";
 
 export function* fileListSource(
   list: FileList,
   options?: BrowserFsItemSourceOptions,
-): Generator<FileCandidate> {
+): Generator<FileCandidate<IterableFile>> {
   // may be worth looking at how list order affects unixfs.addAll
   // could sort by webkitRelativePath before yielding
   for (const file of list) {
