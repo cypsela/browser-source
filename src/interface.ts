@@ -50,7 +50,7 @@ export interface BrowserFsItemSourceOptions {
   /**
    * Path prefix, must end with '/'
    */
-  prefix?: string;
+  prefix?: `${string}/`;
 
   /**
    * Preserve mtime

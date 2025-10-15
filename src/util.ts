@@ -87,7 +87,7 @@ export async function* browserFsItemSource<T extends BrowserFsItem>(
     }
 
     for await (const entry of getEntries(item)) {
-      options.prefix = path + "/";
+      options.prefix = `${path}/`;
       yield* browserFsItemSource(entry, getEntries, getFile, getKind, options);
     }
     return;
