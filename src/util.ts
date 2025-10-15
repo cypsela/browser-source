@@ -70,7 +70,7 @@ export async function* browserFsItemSource<T extends BrowserFsItem>(
   getKind: GetKind<T>,
   options: BrowserFsItemSourceOptions = {},
 ): AsyncGenerator<BrowserFsItemSourceResult> {
-  if (options.hidden === false && item.name.startsWith(".")) {
+  if (options.hidden !== true && item.name.startsWith(".")) {
     return;
   }
 
