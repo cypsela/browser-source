@@ -11,8 +11,12 @@ export function* fileListSource(
   for (const file of list) {
     yield {
       content: createIterableFile(file),
+      // prefer webkitRelative path
       path:
-        file.webkitRelativePath !== "" ? file.webkitRelativePath : undefined,
+        typeof file.webkitRelativePath === "string" &&
+        file.webkitRelativePath !== ""
+          ? file.webkitRelativePath
+          : file.name,
       mtime: options?.mtime ?? msToMtime(file.lastModified),
       mode: options?.mode,
     };
