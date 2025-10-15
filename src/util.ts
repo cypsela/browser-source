@@ -1,5 +1,6 @@
 import blobToIt from "blob-to-it";
 import type { Mtime } from "ipfs-unixfs";
+import { ImportCandidate } from "ipfs-unixfs-importer";
 import type {
   BrowserFsDir,
   BrowserFsFile,
@@ -37,6 +38,15 @@ export function msToMtime(ms: number): Mtime {
     secs: BigInt(secs),
     nsecs: (ms - secs * 1000) * 1000,
   };
+}
+
+export function pickMtime(
+  lastModified: File["lastModified"],
+  options?: Pick<BrowserFsItemSourceOptions, "preserveMtime" | "mtime">,
+): ImportCandidate["mtime"] {
+  return options?.preserveMtime === true
+    ? msToMtime(lastModified)
+    : options?.mtime;
 }
 
 function isDirectory<T extends BrowserFsItem>(
@@ -90,9 +100,7 @@ export async function* browserFsItemSource<T extends BrowserFsItem>(
       path,
       content: createIterableFile(file),
       mode: options.mode,
-      mtime: options.preserveMtime
-        ? msToMtime(file.lastModified)
-        : options.mtime,
+      mtime: pickMtime(file.lastModified, options),
     };
     return;
   }

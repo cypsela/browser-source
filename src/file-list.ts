@@ -1,6 +1,6 @@
 import { FileCandidate } from "ipfs-unixfs-importer";
 import { BrowserFsItemSourceOptions, IterableFile } from "./interface.js";
-import { createIterableFile, msToMtime } from "./util.js";
+import { createIterableFile, pickMtime } from "./util.js";
 
 export function* fileListSource(
   list: FileList,
@@ -17,7 +17,7 @@ export function* fileListSource(
         file.webkitRelativePath !== ""
           ? file.webkitRelativePath
           : file.name,
-      mtime: options?.mtime ?? msToMtime(file.lastModified),
+      mtime: pickMtime(file.lastModified, options),
       mode: options?.mode,
     };
   }
