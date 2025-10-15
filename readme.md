@@ -10,7 +10,7 @@
 
 live: https://browser-source.cypsela.eth.limo
 
-source: [./example](./example)
+source: [./example](https://github.com/cypsela/browser-source/tree/master/example)
 
 ## Usage
 
