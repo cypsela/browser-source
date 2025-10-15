@@ -33,6 +33,10 @@ export function* fileListSource(
   // may be worth looking at how list order affects unixfs.addAll
   // could sort by webkitRelativePath before yielding
   for (const file of list) {
+    if (options?.hidden !== true && file.name.startsWith(".")) {
+      continue;
+    }
+
     yield {
       content: createIterableFile(file),
       // prefer webkitRelative path
