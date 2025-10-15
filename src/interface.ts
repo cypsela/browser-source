@@ -58,14 +58,14 @@ export interface BrowserFsItemSourceOptions {
   preserveMtime?: boolean;
 
   /**
-   * mode to use
-   */
-  mode?: number;
-
-  /**
    * mtime to use - if preserveMtime is true this will be ignored
    */
   mtime?: Mtime;
+
+  /**
+   * mode to use
+   */
+  mode?: number;
 }
 
 export interface BrowserFsItemSource<T extends BrowserFsItem> {
