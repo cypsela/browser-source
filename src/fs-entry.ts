@@ -35,6 +35,30 @@ export function getFsEntryKind(entry: FileSystemEntry): FileSystemHandleKind {
   return entry.isDirectory ? "directory" : "file";
 }
 
+/**
+ * Takes a [FileSystemEntry](https://developer.mozilla.org/en-US/docs/Web/API/FileSystemEntry) and turns it into an
+ * [ImportCandidateStream](https://ipfs.github.io/js-ipfs-unixfs/types/ipfs-unixfs-importer.index.ImportCandidateStream.html)
+ * for importing into [@helia/unixfs](https://ipfs.github.io/helia/modules/_helia_unixfs.index.html).
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/File_and_Directory_Entries_API
+ *
+ * @example
+ * ```
+ * import { fsEntrySource, BrowserFsItemSourceOptions } from '@cypsela/browser-source'
+ * import { createHelia } from 'helia'
+ * import { unixfs } from '@helia/unixfs'
+ *
+ * const helia = await createHelia()
+ * const fs = unixfs(helia)
+ *
+ * const entry: FileSystemEntry = /* Get from drag-and-drop events *\/;
+ *
+ * for await (const { cid } of fs.addAll(fsEntrySource(entry))) {}
+ * ```
+ *
+ * @param entry - [FileSystemEntry](https://developer.mozilla.org/en-US/docs/Web/API/FileSystemEntry)
+ * @param options
+ */
 export function fsEntrySource(
   entry: FileSystemEntry,
   options?: BrowserFsItemSourceOptions,
