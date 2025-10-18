@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Drop Zones</title>
+    <title>browser-source</title>
     <style>
       html,
       body {
@@ -20,7 +20,7 @@
         text-decoration: underline;
       }
 
-      .drop-zone {
+      .zone {
         border: 2px dashed #ccc;
         border-radius: 10px;
         padding: 40px;
@@ -29,7 +29,12 @@
         transition: background 0.3s;
       }
 
-      .drop-zone.hover {
+      .click-zone:hover {
+        cursor: pointer;
+        background: #eef;
+      }
+
+      .hover {
         background: #eef;
       }
 
@@ -45,15 +50,52 @@
     </style>
   </head>
   <body>
-    <a href="https://github.com/cypsela/browser-source/tree/master/example" target="_blank">source</a>
-    <div id="attention"><strong>Attention:</strong> Files added will be hosted on the <strong>public</strong> IPFS network!</div>
-    <div id="entry-zone" class="drop-zone">
+    <a
+      href="https://github.com/cypsela/browser-source/tree/master/example"
+      target="_blank"
+      >source</a
+    >
+    <div id="attention">
+      <strong>Attention:</strong> Files added will be hosted on the
+      <strong>public</strong> IPFS network!
+    </div>
+    <label id="file-list-zone" class="zone click-zone">
+      Select files (FileList API)
+      <input
+        id="file-list-input"
+        style="padding-left: 5rem"
+        hidden
+        type="file"
+        multiple
+      />
+    </label>
+    <label id="folder-list-zone" class="zone click-zone">
+      Select folder (FileList API)
+      <input
+        id="folder-list-input"
+        style="padding-left: 5rem"
+        hidden
+        type="file"
+        multiple
+        webkitdirectory
+      />
+    </label>
+    <div id="entry-zone" class="zone">
       Drop files or folders (FileSystemEntry API)
     </div>
-    <div id="handle-zone" class="drop-zone">
+    <div id="handle-zone" class="zone">
       Drop files or folders (FileSystemHandle API)
     </div>
     <div id="log"></div>
     <script type="module" src="bundle.js"></script>
   </body>
+  <script>
+    const filelz = document.getElementById("file-list-zone");
+    const fileli = document.getElementById("file-list-input");
+    filelz.onclick(() => fileli.click());
+
+    const folderlz = document.getElementById("file-list-zone");
+    const folderli = document.getElementById("file-list-input");
+    folderlz.onclick(() => folderli.click());
+  </script>
 </html>

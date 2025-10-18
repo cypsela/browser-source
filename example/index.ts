@@ -3,6 +3,7 @@ import { createHelia } from "helia";
 import {
   type BrowserFsItemSourceOptions,
   type BrowserFsItemSourceResult,
+  fileListSource,
   fsEntrySource,
   fsHandleSource,
 } from "../src/index.js";
@@ -16,6 +17,7 @@ declare global {
   interface Window {
     helia: any;
     fs: any;
+    fileListSource: any;
     fsEntrySource: any;
     fsHandleSource: any;
   }
@@ -25,17 +27,43 @@ const helia = await createHelia();
 const fs = unixfs(helia);
 
 window.helia = helia;
-window.fs = helia;
+window.fs = fs;
+window.fileListSource = fileListSource;
 window.fsEntrySource = fsEntrySource;
 window.fsHandleSource = fsHandleSource;
 
-const setSupported = <T extends FileSystemEntry | FileSystemHandle>(
+const handleUpload = async <T>(
+  items: T[],
+  sourceFn: (
+    item: T,
+    options?: BrowserFsItemSourceOptions,
+  ) =>
+    | AsyncGenerator<BrowserFsItemSourceResult>
+    | Generator<BrowserFsItemSourceResult>,
+  prefix: string,
+) => {
+  for (const i of items) {
+    for await (const f of fs.addAll(sourceFn(i))) {
+      console.log(f);
+      const message = {
+        cid: f.cid.toString(),
+        path: f.path,
+        size: Number(f.size),
+      };
+      log(prefix + JSON.stringify(message));
+    }
+  }
+};
+
+const setDropSupported = <T extends FileSystemEntry | FileSystemHandle>(
   element: HTMLElement,
   sourceFn: (
     item: T,
     options?: BrowserFsItemSourceOptions,
-  ) => AsyncGenerator<BrowserFsItemSourceResult>,
-  getItem: (item: DataTransferItem) => Promise<T | null>,
+  ) =>
+    | AsyncGenerator<BrowserFsItemSourceResult>
+    | Generator<BrowserFsItemSourceResult>,
+  getItems: (dataTransfer: DataTransfer) => Promise<T[]>,
 ) => {
   const originalText = element.textContent;
 
@@ -59,26 +87,17 @@ const setSupported = <T extends FileSystemEntry | FileSystemHandle>(
       return;
     }
 
-    const items: T[] = [];
-    for (const i of e.dataTransfer.items) {
-      const item = await getItem(i);
-      if (item != null) items.push(item);
-    }
+    const items: T[] = await getItems(e.dataTransfer);
 
     const prefix =
       sourceFn === fsEntrySource ? "ENTRY SOURCE: " : "HANDLE SOURCE: ";
-    for (const i of items) {
-      for await (const f of fs.addAll(sourceFn(i))) {
-        console.log(f);
-        const message = {
-          cid: f.cid.toString(),
-          path: f.path,
-          size: Number(f.size),
-        };
-        log(prefix + JSON.stringify(message));
-      }
-    }
+
+    handleUpload(items, sourceFn, prefix);
   });
+};
+
+const setClickSupported = (element: HTMLInputElement) => {
+  element.addEventListener("change", onInputChange);
 };
 
 const setUnsupported = (element: HTMLElement) => {
@@ -86,11 +105,48 @@ const setUnsupported = (element: HTMLElement) => {
   element.style.opacity = "0.5";
 };
 
+const onInputChange = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+
+  const files = target.files;
+
+  if (files == null) {
+    return;
+  }
+
+  handleUpload([files], fileListSource, "FILE LIST SOURCE: ");
+};
+
+const fileInput = document.getElementById("file-list-input")!;
+const folderInput = document.getElementById("folder-list-input")!;
+if ("files" in HTMLInputElement.prototype) {
+  setClickSupported(fileInput as HTMLInputElement);
+  setClickSupported(folderInput as HTMLInputElement);
+} else {
+  setUnsupported(fileInput);
+  setUnsupported(folderInput);
+}
+
+const getDataTransferItems = async <T>(
+  dt: DataTransfer,
+  getItem: (dtItem: DataTransferItem) => Promise<T | null>,
+): Promise<T[]> => {
+  const items: T[] = [];
+  for (const i of dt.items) {
+    const item = await getItem(i);
+    if (item != null) items.push(item);
+  }
+
+  return items;
+};
+
 const entryDz = document.getElementById("entry-zone")!;
 if (!!window.DataTransferItem?.prototype?.webkitGetAsEntry) {
   const getEntry = (item: DataTransferItem): Promise<FileSystemEntry | null> =>
     Promise.resolve(item?.webkitGetAsEntry?.());
-  setSupported(entryDz, fsEntrySource, getEntry);
+  setDropSupported(entryDz, fsEntrySource, (dt) =>
+    getDataTransferItems(dt, getEntry),
+  );
 } else {
   setUnsupported(entryDz);
 }
@@ -101,13 +157,14 @@ if (!!window.DataTransferItem?.prototype?.getAsFileSystemHandle) {
     item: DataTransferItem,
   ): Promise<FileSystemHandle | null> =>
     item?.getAsFileSystemHandle?.() ?? null;
-  setSupported(handleDz, fsHandleSource, getHandle);
+  setDropSupported(handleDz, fsHandleSource, (dt) =>
+    getDataTransferItems(dt, getHandle),
+  );
 } else {
   setUnsupported(handleDz);
 }
 
 const logDiv = document.getElementById("log")!;
-
 function log(msg: string) {
   const el = document.createElement("div");
   el.textContent = msg;
