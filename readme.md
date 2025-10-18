@@ -1,6 +1,6 @@
 # browser-source
 
-> WICG’s FileSystemEntry and FileSystemHandle as a sources for [@helia/unixfs](https://github.com/ipfs/helia/tree/main/packages/unixfs)
+> W3C's FileList and WICG’s FileSystemEntry and FileSystemHandle as a sources for [@helia/unixfs](https://github.com/ipfs/helia/tree/main/packages/unixfs)
 
 ## Install
 
@@ -16,6 +16,21 @@ source: [./example](https://github.com/cypsela/browser-source/tree/master/exampl
 
 Api docs: [cypsela.github.io/browser-source](https://cypsela.github.io/browser-source)
 
+### [FileList](https://developer.mozilla.org/docs/Web/API/FileList) Source
+
+```ts
+import { fileListSource, BrowserFsItemSourceOptions } from '@cypsela/browser-source'
+import { createHelia } from 'helia'
+import { unixfs } from '@helia/unixfs'
+
+const helia = await createHelia()
+const fs = unixfs(helia)
+
+const list: FileList = /* Get from <input type="file" /> tag or drag-and-drop events */;
+
+for await (const { cid } of fs.addAll(fileListSource(list))) {}
+```
+
 ### [FileSystemEntry](https://developer.mozilla.org/en-US/docs/Web/API/FileSystemEntry) Source
 
 ```ts
@@ -26,9 +41,9 @@ import { unixfs } from '@helia/unixfs'
 const helia = await createHelia()
 const fs = unixfs(helia)
 
-const options: BrowserFsItemSourceOptions = { ... }
+const entry: FileSystemEntry = /* Get from drag-and-drop events */;
 
-for await (const _ of fs.addAll(fsEntrySource(<FileSystemEntry>, options))) {}
+for await (const _ of fs.addAll(fsEntrySource(entry))) {}
 ```
 
 ### [FileSystemHandle](https://developer.mozilla.org/en-US/docs/Web/API/FileSystemHandle) Source
@@ -41,7 +56,7 @@ import { unixfs } from '@helia/unixfs'
 const helia = await createHelia()
 const fs = unixfs(helia)
 
-const options: BrowserFsItemSourceOptions = { ... }
+const handle: FileSystemHandle = /* Get from drag-and-drop events */;
 
-for await (const _ of fs.addAll(fsHandleSource(<FileSystemHandle>, options))) {}
+for await (const _ of fs.addAll(fsHandleSource(handle))) {}
 ```
