@@ -1,7 +1,7 @@
 {
   "name": "@cypsela/browser-source",
   "version": "3.0.0",
-  "description": "WICG’s FileSystemEntry and FileSystemHandle as a sources for @helia/unixfs",
+  "description": "W3C's FileList and WICG’s FileSystemEntry and FileSystemHandle as a sources for @helia/unixfs",
   "type": "module",
   "repository": {
     "url": "https://github.com/cypsela/fs-entry-source",
