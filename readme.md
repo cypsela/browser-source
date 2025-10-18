@@ -16,7 +16,7 @@ source: [./example](https://github.com/cypsela/browser-source/tree/master/exampl
 
 Api docs: [cypsela.github.io/browser-source](https://cypsela.github.io/browser-source)
 
-Instances of these data types are available from [\<input />](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input) elements, [drag-and-drop events](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/drop_event), and window methods like [showOpenFilePicker](https://developer.mozilla.org/en-US/docs/Web/API/Window/showOpenFilePicker).
+Instances of these data types are available from [\<input type="file" />](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/file) elements, [drag-and-drop events](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/drop_event), and window methods like [showOpenFilePicker](https://developer.mozilla.org/en-US/docs/Web/API/Window/showOpenFilePicker).
 
 ### [FileList](https://developer.mozilla.org/docs/Web/API/FileList) Source
 
