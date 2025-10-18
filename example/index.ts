@@ -134,6 +134,8 @@ const onInputChange = (isFolderUpload: boolean) => (e: Event) => {
     "FILE LIST SOURCE: ",
     files.length > 1 && !isFolderUpload,
   );
+
+  target.value = "";
 };
 
 const fileInput = document.getElementById("file-list-input")!;
