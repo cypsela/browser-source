@@ -23,7 +23,8 @@ declare global {
   }
 }
 
-const helia = await createHelia();
+// don't start helia, don't host the files on ipfs
+const helia = await createHelia({ start: false });
 const fs = unixfs(helia);
 
 window.helia = helia;
