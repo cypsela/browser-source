@@ -58,7 +58,7 @@ import { unixfs } from '@helia/unixfs'
 const helia = await createHelia()
 const fs = unixfs(helia)
 
-const handle: FileSystemHandle = /* Get from drag-and-drop events and window.showOpenFilePicker */;
+const handle: FileSystemHandle = /* Get from drag-and-drop events and window methods */
 
 for await (const _ of fs.addAll(fsHandleSource(handle))) {}
 ```
