@@ -25,6 +25,7 @@
     "browser",
     "webkit",
     "opfs",
+    "FileList",
     "FileSystemEntry",
     "FileSystemHandle"
   ],
