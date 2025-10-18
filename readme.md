@@ -28,7 +28,7 @@ import { unixfs } from '@helia/unixfs'
 const helia = await createHelia()
 const fs = unixfs(helia)
 
-const list: FileList = /* Get from <input type="file" /> tag or drag-and-drop events */;
+const list: FileList = /* Get from <input type="file" /> elements */;
 
 for await (const { cid } of fs.addAll(fileListSource(list))) {}
 ```
