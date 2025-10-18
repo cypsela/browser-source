@@ -33,6 +33,17 @@ window.fileListSource = fileListSource;
 window.fsEntrySource = fsEntrySource;
 window.fsHandleSource = fsHandleSource;
 
+async function* concatIterables(
+  ...iters: (
+    | AsyncGenerator<BrowserFsItemSourceResult>
+    | Generator<BrowserFsItemSourceResult>
+  )[]
+): AsyncIterable<BrowserFsItemSourceResult> {
+  for (const it of iters) {
+    yield* it;
+  }
+}
+
 const handleUpload = async <T>(
   items: T[],
   sourceFn: (
@@ -42,17 +53,19 @@ const handleUpload = async <T>(
     | AsyncGenerator<BrowserFsItemSourceResult>
     | Generator<BrowserFsItemSourceResult>,
   prefix: string,
+  wrapWithDirectory: boolean,
 ) => {
-  for (const i of items) {
-    for await (const f of fs.addAll(sourceFn(i))) {
-      console.log(f);
-      const message = {
-        cid: f.cid.toString(),
-        path: f.path,
-        size: Number(f.size),
-      };
-      log(prefix + JSON.stringify(message));
-    }
+  for await (const f of fs.addAll(
+    concatIterables(...items.map((i) => sourceFn(i))),
+    { wrapWithDirectory },
+  )) {
+    console.log(f);
+    const message = {
+      cid: f.cid.toString(),
+      path: f.path,
+      size: Number(f.size),
+    };
+    log(prefix + JSON.stringify(message));
   }
 };
 
@@ -93,12 +106,12 @@ const setDropSupported = <T extends FileSystemEntry | FileSystemHandle>(
     const prefix =
       sourceFn === fsEntrySource ? "ENTRY SOURCE: " : "HANDLE SOURCE: ";
 
-    handleUpload(items, sourceFn, prefix);
+    handleUpload(items, sourceFn, prefix, items.length > 1);
   });
 };
 
 const setClickSupported = (element: HTMLInputElement) => {
-  element.addEventListener("change", onInputChange);
+  element.addEventListener("change", onInputChange(element.webkitdirectory));
 };
 
 const setUnsupported = (element: HTMLElement) => {
@@ -106,7 +119,7 @@ const setUnsupported = (element: HTMLElement) => {
   element.style.opacity = "0.5";
 };
 
-const onInputChange = (e: Event) => {
+const onInputChange = (isFolderUpload: boolean) => (e: Event) => {
   const target = e.target as HTMLInputElement;
 
   const files = target.files;
@@ -115,7 +128,12 @@ const onInputChange = (e: Event) => {
     return;
   }
 
-  handleUpload([files], fileListSource, "FILE LIST SOURCE: ");
+  handleUpload(
+    [files],
+    fileListSource,
+    "FILE LIST SOURCE: ",
+    files.length > 1 && !isFolderUpload,
+  );
 };
 
 const fileInput = document.getElementById("file-list-input")!;
