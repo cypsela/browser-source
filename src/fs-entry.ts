@@ -59,15 +59,19 @@ export function getFsEntryKind(entry: FileSystemEntry): FileSystemHandleKind {
  * @param entry - [FileSystemEntry](https://developer.mozilla.org/en-US/docs/Web/API/FileSystemEntry)
  * @param options
  */
-export function fsEntrySource(
-  entry: FileSystemEntry,
+export async function* fsEntrySource(
+  entry: FileSystemEntry | FileSystemEntry[],
   options?: BrowserFsItemSourceOptions,
 ): AsyncGenerator<BrowserFsItemSourceResult> {
-  return browserFsItemSource(
-    entry,
-    getDirEntryEntries,
-    getFileEntryFile,
-    getFsEntryKind,
-    options,
-  );
+  const entries = Array.isArray(entry) ? entry : [entry];
+
+  for (const entry of entries) {
+    yield* browserFsItemSource(
+      entry,
+      getDirEntryEntries,
+      getFileEntryFile,
+      getFsEntryKind,
+      options,
+    );
+  }
 }

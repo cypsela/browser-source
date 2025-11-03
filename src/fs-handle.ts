@@ -46,15 +46,19 @@ export function getHandleKind(handle: FileSystemHandle): FileSystemHandleKind {
  * @param handle - [FileSystemHandle](https://developer.mozilla.org/en-US/docs/Web/API/FileSystemHandle)
  * @param options
  */
-export function fsHandleSource(
-  handle: FileSystemHandle,
+export async function* fsHandleSource(
+  handle: FileSystemHandle | FileSystemHandle[],
   options?: BrowserFsItemSourceOptions,
 ): AsyncGenerator<BrowserFsItemSourceResult> {
-  return browserFsItemSource(
-    handle,
-    getDirHandleEntries,
-    getFileHandleFile,
-    getHandleKind,
-    options,
-  );
+  const handles = Array.isArray(handle) ? handle : [handle];
+
+  for (const handle of handles) {
+    yield* browserFsItemSource(
+      handle,
+      getDirHandleEntries,
+      getFileHandleFile,
+      getHandleKind,
+      options,
+    );
+  }
 }
