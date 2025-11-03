@@ -9,3 +9,4 @@ export type {
   FileSystemHandleSource,
   IterableFile,
 } from "./interface.js";
+export { hasCommonRoot } from "./util.js";
