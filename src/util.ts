@@ -57,20 +57,13 @@ export function hasCommonRoot(
     return true;
   }
 
-  if (
-    items[0] instanceof FileSystemEntry ||
-    items[0] instanceof FileSystemHandle
-  ) {
-    // more than one item from the same directory = no common root
-    return items.length === 1;
-  }
-
   if (items instanceof FileList) {
     // directory uploads have multiple files from the same common root
     return items.length === 1 || items[0]!.webkitRelativePath.includes("/");
   }
 
-  throw new TypeError("items type is not supported");
+  // more than one item from the same directory = no common root
+  return items.length === 1;
 }
 
 function isDirectory<T extends BrowserFsItem>(
