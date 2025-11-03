@@ -7,6 +7,7 @@ import {
   fsEntrySource,
   fsHandleSource,
 } from "../src/index.js";
+import { hasCommonRoot } from "../src/util.js";
 
 declare global {
   interface DataTransferItem {
@@ -33,19 +34,10 @@ window.fileListSource = fileListSource;
 window.fsEntrySource = fsEntrySource;
 window.fsHandleSource = fsHandleSource;
 
-async function* concatIterables(
-  ...iters: (
-    | AsyncGenerator<BrowserFsItemSourceResult>
-    | Generator<BrowserFsItemSourceResult>
-  )[]
-): AsyncIterable<BrowserFsItemSourceResult> {
-  for (const it of iters) {
-    yield* it;
-  }
-}
-
-const handleUpload = async <T>(
-  items: T[],
+const handleUpload = async <
+  T extends FileList | FileSystemEntry[] | FileSystemHandle[],
+>(
+  items: T,
   sourceFn: (
     item: T,
     options?: BrowserFsItemSourceOptions,
@@ -55,10 +47,7 @@ const handleUpload = async <T>(
   prefix: string,
   wrapWithDirectory: boolean,
 ) => {
-  for await (const f of fs.addAll(
-    concatIterables(...items.map((i) => sourceFn(i))),
-    { wrapWithDirectory },
-  )) {
+  for await (const f of fs.addAll(sourceFn(items), { wrapWithDirectory })) {
     console.log(f);
     const message = {
       cid: f.cid.toString(),
@@ -69,7 +58,7 @@ const handleUpload = async <T>(
   }
 };
 
-const setDropSupported = <T extends FileSystemEntry | FileSystemHandle>(
+const setDropSupported = <T extends FileSystemEntry[] | FileSystemHandle[]>(
   element: HTMLElement,
   sourceFn: (
     item: T,
@@ -77,7 +66,7 @@ const setDropSupported = <T extends FileSystemEntry | FileSystemHandle>(
   ) =>
     | AsyncGenerator<BrowserFsItemSourceResult>
     | Generator<BrowserFsItemSourceResult>,
-  getItems: (dataTransfer: DataTransfer) => Promise<T[]>,
+  getItems: (dataTransfer: DataTransfer) => Promise<T>,
 ) => {
   const originalText = element.textContent;
 
@@ -101,17 +90,17 @@ const setDropSupported = <T extends FileSystemEntry | FileSystemHandle>(
       return;
     }
 
-    const items: T[] = await getItems(e.dataTransfer);
+    const items: T = await getItems(e.dataTransfer);
 
     const prefix =
       sourceFn === fsEntrySource ? "ENTRY SOURCE: " : "HANDLE SOURCE: ";
 
-    handleUpload(items, sourceFn, prefix, items.length > 1);
+    handleUpload(items, sourceFn, prefix, hasCommonRoot(items) === false);
   });
 };
 
 const setClickSupported = (element: HTMLInputElement) => {
-  element.addEventListener("change", onInputChange(element.webkitdirectory));
+  element.addEventListener("change", onInputChange);
 };
 
 const setUnsupported = (element: HTMLElement) => {
@@ -119,7 +108,7 @@ const setUnsupported = (element: HTMLElement) => {
   element.style.opacity = "0.5";
 };
 
-const onInputChange = (isFolderUpload: boolean) => async (e: Event) => {
+const onInputChange = async (e: Event) => {
   const target = e.target as HTMLInputElement;
 
   const files = target.files;
@@ -129,10 +118,10 @@ const onInputChange = (isFolderUpload: boolean) => async (e: Event) => {
   }
 
   await handleUpload(
-    [files],
+    files,
     fileListSource,
     "FILE LIST SOURCE: ",
-    files.length > 1 && !isFolderUpload,
+    hasCommonRoot(files) === false,
   );
 
   target.value = "";
@@ -165,7 +154,7 @@ const entryDz = document.getElementById("entry-zone")!;
 if (!!window.DataTransferItem?.prototype?.webkitGetAsEntry) {
   const getEntry = (item: DataTransferItem): Promise<FileSystemEntry | null> =>
     Promise.resolve(item?.webkitGetAsEntry?.());
-  setDropSupported(entryDz, fsEntrySource, (dt) =>
+  setDropSupported<FileSystemEntry[]>(entryDz, fsEntrySource, (dt) =>
     getDataTransferItems(dt, getEntry),
   );
 } else {
@@ -178,7 +167,7 @@ if (!!window.DataTransferItem?.prototype?.getAsFileSystemHandle) {
     item: DataTransferItem,
   ): Promise<FileSystemHandle | null> =>
     item?.getAsFileSystemHandle?.() ?? null;
-  setDropSupported(handleDz, fsHandleSource, (dt) =>
+  setDropSupported<FileSystemHandle[]>(handleDz, fsHandleSource, (dt) =>
     getDataTransferItems(dt, getHandle),
   );
 } else {
