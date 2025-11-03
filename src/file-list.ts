@@ -27,7 +27,7 @@ import { createIterableFile, pickMtime } from "./util.js";
  * @param options
  */
 export function* fileListSource(
-  list: FileList,
+  list: FileList | File[],
   options?: BrowserFsItemSourceOptions,
 ): Generator<FileCandidate<IterableFile>> {
   // may be worth looking at how list order affects unixfs.addAll
