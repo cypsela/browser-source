@@ -119,7 +119,7 @@ const setUnsupported = (element: HTMLElement) => {
   element.style.opacity = "0.5";
 };
 
-const onInputChange = (isFolderUpload: boolean) => (e: Event) => {
+const onInputChange = (isFolderUpload: boolean) => async (e: Event) => {
   const target = e.target as HTMLInputElement;
 
   const files = target.files;
@@ -128,7 +128,7 @@ const onInputChange = (isFolderUpload: boolean) => (e: Event) => {
     return;
   }
 
-  handleUpload(
+  await handleUpload(
     [files],
     fileListSource,
     "FILE LIST SOURCE: ",
