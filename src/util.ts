@@ -49,6 +49,30 @@ export function pickMtime(
     : options?.mtime;
 }
 
+export function hasCommonRoot(
+  items: FileList | FileSystemEntry[] | FileSystemHandle[],
+): boolean {
+  if (items.length === 0) {
+    // no items = common root
+    return true;
+  }
+
+  if (
+    items[0] instanceof FileSystemEntry ||
+    items[0] instanceof FileSystemHandle
+  ) {
+    // more than one item from the same directory = no common root
+    return items.length === 1;
+  }
+
+  if (items instanceof FileList) {
+    // directory uploads have multiple files from the same common root
+    return items.length === 1 || items[0]!.webkitRelativePath.includes("/");
+  }
+
+  throw new TypeError("items type is not supported");
+}
+
 function isDirectory<T extends BrowserFsItem>(
   item: T,
   getKind: GetKind<T>,
